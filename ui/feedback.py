@@ -1,57 +1,66 @@
-import tkinter as tk
-from tkinter import Frame, Label, Entry, Text, Button
+import customtkinter as ctk
 from tkinter import ttk
 
-# Initialize main window
-root = tk.Tk()
-root.title("Hotel Booking - Feedback Screen")
-root.geometry("1200x600")
-root.configure(bg="#EDEDED")  # Light Grey Background
+# Initialize App
+ctk.set_appearance_mode("light")  # Light Mode
+ctk.set_default_color_theme("blue")  # Blue Theme
+
+app = ctk.CTk()
+app.title("Hotel Booking - Feedback Screen")
+app.geometry("1000x600")
+app.resizable(False, False)
 
 # ---------------- Sidebar (Navigation) ---------------- #
-sidebar = Frame(root, bg="#2C3E50", width=220, height=600)
-sidebar.place(x=0, y=0)
+sidebar = ctk.CTkFrame(app, fg_color="#2C3E50", width=200, corner_radius=0)
+sidebar.pack(side="left", fill="y")
 
-Label(sidebar, text="🏨 Hotel Booking", font=("Arial", 12, "bold"), fg="white", bg="#2C3E50").place(x=20, y=20)
+ctk.CTkLabel(sidebar, text="🏨 Hotel Booking", font=("Arial", 14, "bold"), text_color="white").pack(pady=20)
 
-# Sidebar Buttons
-nav_buttons = [
-    ("🏠 Home", 70),
-    ("📅 Bookings", 120),
-    ("👤 Profile", 170),
-    ("💬 Feedback", 220),
-    ("🔑 Logout", 500)
-]
-for text, y in nav_buttons:
-    Button(sidebar, text=text, font=("Arial", 10), fg="white", bg="#34495E", relief="flat", width=18, height=1).place(x=20, y=y)
+nav_buttons = ["🏠 Home", "📅 Bookings", "👤 Profile", "💬 Feedback", "🔑 Logout"]
+for btn_text in nav_buttons:
+    ctk.CTkButton(sidebar, text=btn_text, fg_color="#34495E", hover_color="#1D3557", width=180).pack(pady=5)
 
 # ---------------- Main Content ---------------- #
-content_frame = Frame(root, bg="white", width=980, height=600)
-content_frame.place(x=220, y=0)
+content_frame = ctk.CTkFrame(app, fg_color="white")
+content_frame.pack(side="right", expand=True, fill="both", padx=10, pady=10)
 
-Label(content_frame, text="Give Your Feedback", font=("Arial", 14, "bold"), bg="white").place(x=400, y=30)
+ctk.CTkLabel(content_frame, text="Give Your Feedback", font=("Arial", 16, "bold"), text_color="#2C3E50").pack(pady=10)
 
 # ---------------- Feedback Form ---------------- #
-feedback_frame = Frame(content_frame, bg="white", width=900, height=300, highlightbackground="#D5D8DC", highlightthickness=1)
-feedback_frame.place(x=30, y=70)
+feedback_frame = ctk.CTkFrame(content_frame, fg_color="#F8F9FA", corner_radius=10)
+feedback_frame.pack(pady=10, padx=10, fill="x")
 
-Label(feedback_frame, text="💬 We Value Your Feedback", font=("Arial", 12, "bold"), bg="white").place(x=20, y=10)
+ctk.CTkLabel(feedback_frame, text="💬 We Value Your Feedback", font=("Arial", 12, "bold")).pack(anchor="w", padx=10, pady=5)
 
 # Full Name Entry
-Label(feedback_frame, text="👤 Full Name", font=("Arial", 10), bg="white").place(x=20, y=50)
-Entry(feedback_frame, width=60).place(x=20, y=70)
+row1 = ctk.CTkFrame(feedback_frame, fg_color="transparent")
+row1.pack(fill="x", padx=10, pady=5)
+ctk.CTkLabel(row1, text="👤 Full Name", width=120, anchor="w").pack(side="left")
+name_entry = ctk.CTkEntry(row1, width=300)
+name_entry.pack(side="left", padx=10)
 
 # Rating Stars
-Label(feedback_frame, text="⭐ Rate Your Experience", font=("Arial", 10), bg="white").place(x=20, y=110)
-stars = ["⭐", "⭐", "⭐", "⭐", "⭐"]
-for i, star in enumerate(stars):
-    Button(feedback_frame, text=star, font=("Arial", 12), relief="flat", bg="white").place(x=180 + (i * 40), y=105)
+ctk.CTkLabel(feedback_frame, text="⭐ Rate Your Experience").pack(anchor="w", padx=10)
+rating_frame = ctk.CTkFrame(feedback_frame, fg_color="transparent")
+rating_frame.pack(anchor="w", padx=10, pady=5)
+
+stars = []
+def set_rating(value):
+    for i in range(5):
+        stars[i].configure(text="⭐" if i < value else "☆")
+
+for i in range(5):
+    star_btn = ctk.CTkButton(rating_frame, text="☆", width=30, height=30, font=("Arial", 20), fg_color="white", text_color="black", command=lambda i=i+1: set_rating(i))
+    star_btn.pack(side="left", padx=5)
+    stars.append(star_btn)
 
 # Feedback Text Box
-Label(feedback_frame, text="💭 Your Feedback", font=("Arial", 10), bg="white").place(x=20, y=150)
-Text(feedback_frame, width=80, height=4).place(x=20, y=170)
+ctk.CTkLabel(feedback_frame, text="💭 Your Feedback").pack(anchor="w", padx=10)
+feedback_text = ctk.CTkTextbox(feedback_frame, width=400, height=100)
+feedback_text.pack(padx=10, pady=5)
 
 # Submit Button
-Button(feedback_frame, text="Submit Feedback", font=("Arial", 12, "bold"), bg="#001F3F", fg="white", width=40, height=2).place(x=200, y=250)
+submit_button = ctk.CTkButton(feedback_frame, text="Submit Feedback", fg_color="#007BFF", hover_color="#0056b3", width=200)
+submit_button.pack(pady=10)
 
-root.mainloop()
+app.mainloop()

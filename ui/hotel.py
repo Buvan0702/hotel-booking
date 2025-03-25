@@ -1,55 +1,63 @@
-import tkinter as tk
-from tkinter import Frame, Label, Button, Entry, ttk
+import customtkinter as ctk
 
-# Initialize main window
-root = tk.Tk()
-root.title("Hotel Booking - Customer Home")
-root.geometry("1200x600")
-root.configure(bg="#EDEDED")  # Light Grey Background
+# Initialize App
+ctk.set_appearance_mode("light")  # Light Mode
+ctk.set_default_color_theme("blue")  # Blue Theme
+
+app = ctk.CTk()
+app.title("Hotel Booking - Customer Home")
+app.geometry("1000x600")
+app.resizable(False, False)
 
 # ---------------- Sidebar (Navigation) ---------------- #
-sidebar = Frame(root, bg="#2C3E50", width=220, height=600)
-sidebar.place(x=0, y=0)
+sidebar = ctk.CTkFrame(app, fg_color="#2C3E50", width=200, corner_radius=0)
+sidebar.pack(side="left", fill="y")
 
-Label(sidebar, text="🏨 Hotel Booking", font=("Arial", 12, "bold"), fg="white", bg="#2C3E50").place(x=20, y=20)
+ctk.CTkLabel(sidebar, text="🏨 Hotel Booking", font=("Arial", 14, "bold"), text_color="white").pack(pady=20)
 
 # Sidebar Buttons
 nav_buttons = [
-    ("🏠 Home", 70),
-    ("📅 Bookings", 120),
-    ("👤 Profile", 170),
-    ("💬 Feedback", 220),
-    ("🔑 Logout", 500)
+    ("🏠 Home"),
+    ("📅 Bookings"),
+    ("👤 Profile"),
+    ("💬 Feedback"),
+    ("🔑 Logout")
 ]
-for text, y in nav_buttons:
-    Button(sidebar, text=text, font=("Arial", 10), fg="white", bg="#34495E", relief="flat", width=18, height=1).place(x=20, y=y)
+
+for btn_text in nav_buttons:
+    ctk.CTkButton(sidebar, text=btn_text, fg_color="#34495E", hover_color="#1D3557", width=180).pack(pady=5)
 
 # ---------------- Main Content ---------------- #
-content_frame = Frame(root, bg="white", width=980, height=600)
-content_frame.place(x=220, y=0)
+content_frame = ctk.CTkFrame(app, fg_color="white")
+content_frame.pack(side="right", expand=True, fill="both", padx=10, pady=10)
 
-Label(content_frame, text="Find Your Perfect Stay", font=("Arial", 14, "bold"), bg="white").place(x=350, y=30)
+ctk.CTkLabel(content_frame, text="Find Your Perfect Stay", font=("Arial", 16, "bold"), text_color="#2C3E50").pack(pady=10)
 
 # ---------------- Search Section ---------------- #
-search_frame = Frame(content_frame, bg="white", width=800, height=100, highlightbackground="#D5D8DC", highlightthickness=1)
-search_frame.place(x=100, y=70)
+search_frame = ctk.CTkFrame(content_frame, fg_color="white", border_width=1, border_color="#D5D8DC")
+search_frame.pack(pady=10, padx=20, fill="x")
 
-Label(search_frame, text="📍 Location", font=("Arial", 10, "bold"), bg="white").place(x=20, y=10)
-Entry(search_frame, width=20).place(x=20, y=30)
+search_fields = [
+    ("📍 Location", 150),
+    ("📅 Check-in Date", 120),
+    ("📅 Check-out Date", 120),
+    ("👤 Guests", 80)
+]
 
-Label(search_frame, text="📅 Check-in Date", font=("Arial", 10, "bold"), bg="white").place(x=220, y=10)
-Entry(search_frame, width=15).place(x=220, y=30)
+entry_fields = {}
+for label_text, width in search_fields:
+    row = ctk.CTkFrame(search_frame, fg_color="white")
+    row.pack(side="left", padx=10, pady=10)
+    
+    ctk.CTkLabel(row, text=label_text, font=("Arial", 10, "bold")).pack(anchor="w")
+    entry = ctk.CTkEntry(row, width=width)
+    entry.pack()
+    entry_fields[label_text] = entry
 
-Label(search_frame, text="📅 Check-out Date", font=("Arial", 10, "bold"), bg="white").place(x=400, y=10)
-Entry(search_frame, width=15).place(x=400, y=30)
-
-Label(search_frame, text="👤 Guests", font=("Arial", 10, "bold"), bg="white").place(x=580, y=10)
-Entry(search_frame, width=10).place(x=580, y=30)
-
-Button(search_frame, text="Search Rooms", font=("Arial", 10, "bold"), bg="#FFC107", fg="black", width=80, height=1).place(x=20, y=60)
+ctk.CTkButton(search_frame, text="Search Rooms", fg_color="#FFC107", text_color="black", width=120).pack(side="left", padx=10, pady=10)
 
 # ---------------- Popular Hotels Section ---------------- #
-Label(content_frame, text="Popular Hotels", font=("Arial", 12, "bold"), bg="white").place(x=100, y=180)
+ctk.CTkLabel(content_frame, text="Popular Hotels", font=("Arial", 14, "bold"), text_color="#2C3E50").pack(pady=10)
 
 hotels = [
     ("Luxury Grand Hotel", "A 5-star hotel with exclusive services and amenities.", "📶 Free WiFi | 🏊 Pool | 🚗 Free Parking", "$250 per night"),
@@ -57,17 +65,17 @@ hotels = [
     ("Mountain Retreat Lodge", "Escape to nature with this peaceful mountain lodge.", "🌲 Nature Trails | 🔥 Fireplace | ❄ Air Conditioning", "$180 per night")
 ]
 
-# Display Hotel Listings
-x_offset = 100
+hotel_frame = ctk.CTkFrame(content_frame, fg_color="white")
+hotel_frame.pack(pady=10)
+
 for hotel in hotels:
-    hotel_frame = Frame(content_frame, bg="white", width=250, height=130, highlightbackground="#D5D8DC", highlightthickness=1)
-    hotel_frame.place(x=x_offset, y=220)
+    card = ctk.CTkFrame(hotel_frame, fg_color="white", border_width=1, border_color="#D5D8DC", width=280, height=140)
+    card.pack(side="left", padx=10, pady=10)
+    
+    ctk.CTkLabel(card, text=hotel[0], font=("Arial", 12, "bold")).pack(anchor="w", padx=10, pady=5)
+    ctk.CTkLabel(card, text=hotel[1], font=("Arial", 10), wraplength=250).pack(anchor="w", padx=10)
+    ctk.CTkLabel(card, text=hotel[2], font=("Arial", 9), wraplength=250).pack(anchor="w", padx=10)
+    ctk.CTkLabel(card, text=hotel[3], font=("Arial", 10, "bold"), text_color="blue").pack(anchor="w", padx=10, pady=5)
 
-    Label(hotel_frame, text=hotel[0], font=("Arial", 10, "bold"), bg="white").place(x=10, y=10)
-    Label(hotel_frame, text=hotel[1], font=("Arial", 9), bg="white").place(x=10, y=30)
-    Label(hotel_frame, text=hotel[2], font=("Arial", 9), bg="white").place(x=10, y=50)
-    Label(hotel_frame, text=hotel[3], font=("Arial", 9, "bold"), fg="blue", bg="white").place(x=10, y=90)
-
-    x_offset += 280  # Move to the next column
-
-root.mainloop()
+# Run App
+app.mainloop()

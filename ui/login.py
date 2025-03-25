@@ -1,55 +1,59 @@
-import tkinter as tk
-from tkinter import Frame, Label, Entry, Button, Checkbutton, IntVar
+import customtkinter as ctk
 
-# Initialize main window
-root = tk.Tk()
-root.title("Hotel Booking Login")
-root.geometry("550x325")
-root.configure(bg="#F5F5F5")  # Light Grey Background (Matching the Outer UI)
+# Setup
+ctk.set_appearance_mode("light")
+ctk.set_default_color_theme("blue")
 
-# Main container (Holds both sections)
-main_frame = Frame(root, bg="white", width=530, height=300, relief="flat", bd=2)
-main_frame.place(relx=0.5, rely=0.5, anchor="center")
+app = ctk.CTk()
+app.title("Hotel Booking Login")
+app.geometry("1000x800")
+app.resizable(False, False)
 
-# Left Section - Dark Blue Background (Image Placeholder)
-left_frame = Frame(main_frame, bg="#2C3E50", width=250, height=300)
-left_frame.place(x=0, y=0)
+# ----------------- Main Frame -----------------
+main_frame = ctk.CTkFrame(app, fg_color="white", corner_radius=15)
+main_frame.pack(padx=20, pady=20, expand=True, fill="both")
 
-Label(left_frame, text="🏨", font=("Arial", 40), bg="#2C3E50", fg="white").place(relx=0.5, rely=0.3, anchor="center")
-Label(left_frame, text="Hotel Booking", font=("Arial", 12, "bold"), bg="#2C3E50", fg="white").place(relx=0.5, rely=0.6, anchor="center")
+# ----------------- Left Frame (Branding) -----------------
+left_frame = ctk.CTkFrame(main_frame, fg_color="#2C3E50", width=250, corner_radius=15)
+left_frame.pack(side="left", fill="y")
 
-# Right Section - Login Form
-right_frame = Frame(main_frame, bg="white", width=280, height=300)
-right_frame.place(x=250, y=0)
+ctk.CTkLabel(left_frame, text="🏨", font=("Arial", 45), text_color="white").pack(pady=(50, 10))
+ctk.CTkLabel(left_frame, text="Hotel Booking", font=("Arial", 14, "bold"), text_color="white").pack()
 
-# Title
-Label(right_frame, text="🏨 Hotel Booking", font=("Arial", 12, "bold"), bg="white").pack(pady=10)
+# ----------------- Right Frame (Login Form) -----------------
+right_frame = ctk.CTkFrame(main_frame, fg_color="white")
+right_frame.pack(side="right", expand=True, fill="both", padx=15, pady=15)
 
-# Subtitle
-Label(right_frame, text="Login to Your Account", font=("Arial", 10), bg="white").pack()
+# Top Titles
+ctk.CTkLabel(right_frame, text="🏨 Hotel Booking", font=("Arial", 16, "bold"), text_color="#2C3E50").pack(pady=(10, 2))
+ctk.CTkLabel(right_frame, text="Login to Your Account", font=("Arial", 12), text_color="gray").pack(pady=(0, 15))
 
-# Email Field
-Label(right_frame, text="📧 Email", font=("Arial", 9), bg="white").place(x=20, y=60)
-email_entry = Entry(right_frame, width=30, font=("Arial", 9), bd=1, relief="solid")
-email_entry.place(x=20, y=80)
+# Email
+ctk.CTkLabel(right_frame, text="Email", anchor="w", font=("Arial", 10)).pack(fill="x", padx=30)
+email_entry = ctk.CTkEntry(right_frame, width=200)
+email_entry.pack(padx=30, pady=5)
 
-# Password Field
-Label(right_frame, text="🔒 Password", font=("Arial", 9), bg="white").place(x=20, y=110)
-password_entry = Entry(right_frame, width=30, font=("Arial", 9), bd=1, relief="solid", show="*")
-password_entry.place(x=20, y=130)
+# Password
+ctk.CTkLabel(right_frame, text="Password", anchor="w", font=("Arial", 10)).pack(fill="x", padx=30, pady=(10, 0))
+password_entry = ctk.CTkEntry(right_frame, show="*", width=200)
+password_entry.pack(padx=30, pady=5)
 
-# Remember Me Checkbox
-remember_var = IntVar()
-Checkbutton(right_frame, text="Remember Me", variable=remember_var, bg="white", font=("Arial", 8)).place(x=20, y=160)
+# Options Row
+options_frame = ctk.CTkFrame(right_frame, fg_color="transparent")
+options_frame.pack(fill="x", padx=30, pady=(5, 10))
 
-# Forgot Password Link
-Label(right_frame, text="Forgot Password?", font=("Arial", 8), fg="blue", bg="white", cursor="hand2").place(x=160, y=160)
+remember_var = ctk.IntVar()
+ctk.CTkCheckBox(options_frame, text="Remember Me", variable=remember_var).pack(side="left")
+ctk.CTkLabel(options_frame, text="Forgot Password?", text_color="blue", font=("Arial", 10), cursor="hand2").pack(side="right")
 
 # Login Button
-Button(right_frame, text="Login", font=("Arial", 10, "bold"), bg="#1D3557", fg="white", width=25, height=1, relief="flat").place(x=20, y=190)
+ctk.CTkButton(right_frame, text="Login", fg_color="#1D3557", width=200).pack(pady=(5, 10))
 
-# Sign Up Link
-Label(right_frame, text="Don't have an account?", font=("Arial", 8), bg="white").place(x=40, y=230)
-Label(right_frame, text="Sign Up", font=("Arial", 8, "bold"), fg="blue", bg="white", cursor="hand2").place(x=180, y=230)
+# Sign Up
+signup_frame = ctk.CTkFrame(right_frame, fg_color="transparent")
+signup_frame.pack()
+ctk.CTkLabel(signup_frame, text="Don't have an account?", font=("Arial", 10)).pack(side="left")
+ctk.CTkLabel(signup_frame, text="Sign Up", text_color="blue", font=("Arial", 10, "bold"), cursor="hand2").pack(side="left", padx=5)
 
-root.mainloop()
+# Run App
+app.mainloop()
